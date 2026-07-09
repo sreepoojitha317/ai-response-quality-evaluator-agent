@@ -1,0 +1,16 @@
+# Environment
+.env
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Chroma DB
+data/chroma_db/
+
+# VS Code
+.vscode/
+
+data/processed/chunks.pkl
+data/processed/merged_dataset.csv
+data/processed/processed_dataset.csv

@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>AI Response Evaluator</title>
+
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="/static/css/style.css">
+
+
+    <!-- Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+
+</head>
+
+
+<body>
+
+
+<div class="page-container">
+
+
+    <!-- ================= HEADER ================= -->
+
+
+    <header class="header">
+
+
+        <h1>
+            AI Response Evaluator
+        </h1>
+
+
+        <p>
+            Evaluate AI-generated responses using intelligent quality analysis.
+        </p>
+
+
+    </header>
+
+
+
+
+
+    <!-- ================= MAIN CONTENT ================= -->
+
+
+    <div class="main-layout">
+
+
+
+        <!-- LEFT INPUT PANEL -->
+
+
+        <section class="input-card">
+
+
+            <h2>
+                Response Input
+            </h2>
+
+
+
+
+
+            <!-- QUESTION -->
+
+
+            <div class="form-group">
+
+
+                <label>
+                    Question
+                </label>
+
+
+                <textarea 
+                id="question"
+                placeholder="Enter your question here..."
+                rows="4"></textarea>
+
+
+            </div>
+
+
+
+
+
+
+
+
+            <!-- RESPONSE TYPE -->
+
+
+            <div class="form-group">
+
+
+                <label>
+                    Response Type
+                </label>
+
+
+
+                <div class="response-types">
+
+
+
+                    <label class="option-card">
+
+
+                        <input 
+                        type="radio"
+                        name="type"
+                        value="text"
+                        checked>
+
+
+                        <span>
+                            📝 Text
+                        </span>
+
+
+                    </label>
+
+
+
+
+
+
+                    <label class="option-card">
+
+
+                        <input 
+                        type="radio"
+                        name="type"
+                        value="pdf">
+
+
+                        <span>
+                            📄 PDF
+                        </span>
+
+
+                    </label>
+
+
+
+
+
+
+
+                    <label class="option-card">
+
+
+                        <input 
+                        type="radio"
+                        name="type"
+                        value="voice">
+
+
+                        <span>
+                            🎤 Voice
+                        </span>
+
+
+                    </label>
+
+
+
+                </div>
+
+
+
+            </div>
+
+
+
+
+
+
+
+
+            <!-- TEXT RESPONSE -->
+
+
+            <div id="text-section" class="response-section">
+
+
+                <label>
+                    AI Generated Response
+                </label>
+
+
+                <textarea
+                id="text-response"
+                rows="6"
+                placeholder="Paste AI generated response..."></textarea>
+
+
+
+            </div>
+
+
+
+
+
+
+
+            <!-- PDF RESPONSE -->
+
+
+            <div id="pdf-section" class="response-section hidden">
+
+
+                <label>
+                    Upload Response PDF
+                </label>
+
+
+
+                <div class="upload-area">
+
+
+                    <div class="upload-icon">
+                        📄
+                    </div>
+
+
+                    <p>
+                        Drag & Drop PDF file
+                    </p>
+
+
+                    <span>
+                        or click to browse
+                    </span>
+
+
+
+                    <input 
+                    type="file"
+                    id="pdf-file"
+                    accept=".pdf">
+
+
+
+                </div>
+
+
+
+            </div>
+
+
+
+
+
+
+
+
+            <!-- VOICE RESPONSE -->
+
+
+            <div id="voice-section" class="response-section hidden">
+
+
+                <label>
+                    Voice Response
+                </label>
+
+
+
+                <div class="voice-box">
+
+
+                    <button id="mic-button">
+
+                        🎤
+
+                    </button>
+
+
+                    <h3>
+                        Start Recording
+                    </h3>
+
+
+                    <p id="voice-status">
+
+                        Click microphone and speak
+
+                    </p>
+
+
+
+                </div>
+
+
+
+            </div>
+
+
+
+
+
+
+
+
+            <!-- REFERENCE -->
+
+
+            <div class="form-group">
+
+
+                <label>
+                    Reference Answer (Optional)
+                </label>
+
+
+                <textarea
+                id="reference"
+                rows="4"
+                placeholder="Enter reference answer or source information..."></textarea>
+
+
+
+            </div>
+
+
+
+
+
+
+
+            <!-- BUTTON -->
+
+
+            <button 
+            id="evaluate-button"
+            class="evaluate-btn">
+
+
+                Evaluate Response
+
+
+            </button>
+
+
+
+
+
+        </section>
+
+
+
+
+
+
+        <!-- RIGHT INFORMATION PANEL -->
+
+
+        <section class="info-card">
+
+
+            <div class="info-content">
+
+
+                <div class="icon">
+
+                    🤖
+
+                </div>
+
+
+
+                <h2>
+                    AI Evaluation Workspace
+                </h2>
+
+
+                <p>
+
+                    Submit your question and AI-generated response.
+                    Evaluation results will be generated here after processing.
+
+                </p>
+
+
+
+                <div class="future-box">
+
+
+                    
+
+                </div>
+
+
+            </div>
+
+
+
+        </section>
+
+
+
+    </div>
+
+
+
+
+
+</div>
+
+
+
+
+
+<script src="/static/js/script.js"></script>
+
+
+</body>
+
+
+</html>
