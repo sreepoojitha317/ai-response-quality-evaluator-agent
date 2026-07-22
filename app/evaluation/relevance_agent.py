@@ -1,6 +1,7 @@
 import json
+import re
 
-from app.evaluation.gemini_eval import generate_response
+from app.evaluation.ollama_eval import generate_response
 from app.evaluation.prompt_templates import build_prompt
 
 
@@ -45,14 +46,25 @@ Evaluation Rules:
 • Use intermediate scores whenever appropriate.
 • Give 10 only if the response is fully relevant.
 • Give 0 only if the response is completely unrelated.
+• If the AI response matches the reference answer exactly, assign a relevance score of 10.
+• Short answers (one word or one sentence) are acceptable if they correctly answer the question.
+• Do not penalize responses for being brief.
+• If the response directly answers the question, give 10 even if no extra explanation is provided.
+IMPORTANT:
 
-Return ONLY valid JSON in this format:
+Return ONLY valid JSON.
+
+Do NOT write explanations outside JSON.
+
+Do NOT use markdown.
+
+Return EXACTLY this format:
 
 {
-    "score": <0-10>,
-    "reason": "<brief explanation>",
-    "evidence": "<supporting evidence>",
-    "status": "<PASS or FAIL>"
+    "score": 0,
+    "reason": "",
+    "evidence": "",
+    "status": ""
 }
 """
 
@@ -65,14 +77,26 @@ Return ONLY valid JSON in this format:
 
     response = generate_response(prompt)
 
+    # Uncomment for debugging if needed
+    # print("\n========== RAW OLLAMA RESPONSE ==========")
+    # print(response)
+    # print("=========================================\n")
+
     try:
-        result = json.loads(response)
+
+        # Extract JSON even if Ollama adds extra text
+        match = re.search(r"\{.*\}", response, re.DOTALL)
+
+        if match:
+            result = json.loads(match.group())
+        else:
+            raise ValueError("JSON not found")
 
     except Exception:
 
         result = {
             "score": None,
-            "reason": "Unable to parse Gemini response.",
+            "reason": "Unable to parse Ollama response.",
             "evidence": response,
             "status": "ERROR"
         }

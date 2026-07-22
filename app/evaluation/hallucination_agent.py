@@ -1,6 +1,7 @@
 import json
+import re
 
-from app.evaluation.gemini_eval import generate_response
+from app.evaluation.ollama_eval import generate_response
 from app.evaluation.prompt_templates import build_prompt
 
 
@@ -47,8 +48,18 @@ Evaluation Rules:
 • Penalize only unsupported or invented facts.
 • Give 10 only when every important statement is supported.
 • Give 0 only when almost everything is fabricated.
+• If the AI response matches the reference answer exactly, the hallucination score MUST be 10.
+• If every claim in the AI response is supported by the reference, the score MUST be 10.
+• Give a score of 0 ONLY when the response is almost entirely fabricated or unsupported.
+• Ensure that the score is consistent with the reason.
 
-Return ONLY valid JSON in this format:
+IMPORTANT:
+Return ONLY valid JSON.
+Do NOT use markdown.
+Do NOT use ```json.
+Do NOT write any explanation outside JSON.
+
+Expected format:
 
 {
     "score": <0-10>,
@@ -68,13 +79,26 @@ Return ONLY valid JSON in this format:
     response = generate_response(prompt)
 
     try:
+        # Remove markdown if present
+        response = response.strip()
+
+        if response.startswith("```"):
+            response = re.sub(r"^```(?:json)?", "", response)
+            response = response.replace("```", "").strip()
+
+        # Extract JSON object
+        match = re.search(r"\{.*\}", response, re.DOTALL)
+
+        if match:
+            response = match.group()
+
         result = json.loads(response)
 
     except Exception:
 
         result = {
             "score": None,
-            "reason": "Unable to parse Gemini response.",
+            "reason": "Unable to parse Ollama response.",
             "evidence": response,
             "status": "ERROR"
         }

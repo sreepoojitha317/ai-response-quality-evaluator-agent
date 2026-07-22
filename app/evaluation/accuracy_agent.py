@@ -1,6 +1,7 @@
 import json
+import re
 
-from app.evaluation.gemini_eval import generate_response
+from app.evaluation.ollama_eval import generate_response
 from app.evaluation.prompt_templates import build_prompt
 
 
@@ -45,13 +46,21 @@ Evaluation Rules:
 • Give 10 ONLY if every important fact is correct.
 • Give 0 ONLY if the response is completely wrong or contradicts the reference.
 
-Return ONLY valid JSON in this format:
+IMPORTANT:
+
+Return ONLY valid JSON.
+
+Do NOT write explanations outside JSON.
+
+Do NOT use markdown.
+
+Return EXACTLY this format:
 
 {
-    "score": <0-10>,
-    "reason": "<brief explanation>",
-    "evidence": "<supporting evidence>",
-    "status": "<PASS or FAIL>"
+    "score": 0,
+    "reason": "",
+    "evidence": "",
+    "status": ""
 }
 """
 
@@ -64,14 +73,26 @@ Return ONLY valid JSON in this format:
 
     response = generate_response(prompt)
 
+    # Uncomment while debugging if needed
+    # print("\n========== RAW OLLAMA RESPONSE ==========")
+    # print(response)
+    # print("=========================================\n")
+
     try:
-        result = json.loads(response)
+
+        # Extract JSON even if Ollama adds extra text
+        match = re.search(r"\{.*\}", response, re.DOTALL)
+
+        if match:
+            result = json.loads(match.group())
+        else:
+            raise ValueError("JSON not found")
 
     except Exception:
 
         result = {
             "score": None,
-            "reason": "Unable to parse Gemini response.",
+            "reason": "Unable to parse Ollama response.",
             "evidence": response,
             "status": "ERROR"
         }
